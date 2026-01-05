@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual env
+venv/
+.venv/
+
+# Environment variables
+.env
+
+# Data + cache
+data/
+pdfs/
+.cache/
+.huggingface/
+
+# Docker & build artifacts
+*.log
+
+# IDE files
+.vscode/
+.idea/
