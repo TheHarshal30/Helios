@@ -1,5 +1,5 @@
 from .policy_profile import build_policy_profile
-from .local_llm import local_chat
+from .local_llm import chat
 
 
 def format_single_policy(policy_name, profiles):
@@ -63,6 +63,6 @@ If anything is unclear, say: "not specified in the provided text".
 Do NOT invent details.
 """
 
-    return local_chat([
+    return chat([
         {"role": "user", "content": prompt}
     ])

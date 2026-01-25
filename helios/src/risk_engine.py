@@ -1,5 +1,5 @@
 import json
-from .local_llm import local_chat
+from .local_llm import chat
 
 
 RISK_PROMPT = """
@@ -59,7 +59,7 @@ def extract_risk_profile(user_text: str):
     """
     prompt = RISK_PROMPT.replace("{TEXT}", user_text)
 
-    raw = local_chat([
+    raw = chat([
         {"role": "user", "content": prompt}
     ])
 
@@ -136,7 +136,7 @@ def policy_precheck(user_text: str):
 
 
 
-from .local_llm import local_chat
+from .local_llm import chat
 
 
 def explain_risk_profile(result: dict) -> str:
@@ -168,6 +168,33 @@ If something is empty, tell the user that it's not detected instead of inventing
 Use simple language. Do NOT add new risks. Base everything ONLY on the JSON.
 """
 
-    return local_chat([
+    return chat([
         {"role": "user", "content": prompt}
     ])
+
+
+
+def analyze_business_risk(business_profile: dict):
+    """
+    Convert structured business info into a risk analysis.
+    """
+
+    text = f"""
+    Business Name: {business_profile.get('businessName')}
+    Industry: {business_profile.get('industry')}
+    Number of Employees: {business_profile.get('employees')}
+    Annual Revenue: {business_profile.get('revenue')}
+    Assets & Equipment: {business_profile.get('assets')}
+
+    Business Description:
+    {business_profile.get('description')}
+    """
+
+    result = policy_precheck(text)
+
+    return {
+        "input_summary": text.strip(),
+        "risks": result.get("risks", {}),
+        "mandatory_coverages": result.get("mandatory", []),
+        "optional_coverages": result.get("optional", [])
+    }

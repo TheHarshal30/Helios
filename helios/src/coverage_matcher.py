@@ -1,4 +1,4 @@
-from .local_llm import local_chat
+from .local_llm import chat
 import json
 
 
@@ -90,6 +90,6 @@ Important rules:
 - Use clear bullet points
 """
 
-    return local_chat([
+    return chat([
         {"role": "user", "content": prompt}
     ])
